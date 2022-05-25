@@ -35,11 +35,41 @@ bool calculaAreaMinima (float altura, float largura){
 	else {return false;
 	}
 }
-bool areaPortasJanelas (struct Parede parede){
-	float areaParede = (parede.altura * parede.largura);
-	parede.qntPorta 
+
+bool proporcaoArea (struct Parede parede){
+	float area = ( parede.altura*parede.largura) /2;
+	float totalPortas = 1.52* parede.qntPorta;
+	float totalJanelas = 2.4* parede.qtdJanela;
+	
+//	printf("Metade da area da parede:  %.2f", area);
+//	printf( "total das portas: %.2f",  totalPortas);
+//	printf("total das janelas: %.2f",totalJanelas);
 	
 	
+	if ((totalPortas+totalJanelas)<=area) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+bool alturaMinima( float altura, int qtdPortas){
+	
+	if (qtdPortas >0 && (altura-0.3) >= 1.9) {
+		return true;
+	}
+	else {
+		return false;
+	}
+	
+}
+
+int quantidadeDeTinta (struct Comodo comodo){
+	float altura = comodo.paredes[0].altura + comodo.paredes[1].altura + comodo.paredes[2].altura + comodo.paredes[3].altura;
+	float largura = comodo.paredes[0].largura + comodo.paredes[1].largura + comodo.paredes[2].altura + comodo.paredes[3].altura;
+	float janelas = comodo.paredes[0].qtdJanela + comodo.paredes[1].qtdJanela + comodo.paredes[2].qtdJanela + comodo.paredes[3].qtdJanela;
+	float portas = comodo.paredes[0].qntPorta + comodo.paredes[1].qntPorta + comodo.paredes[2].qntPorta + comodo.paredes[3].qntPorta;
 }
 
 int main (){
@@ -57,21 +87,32 @@ int main (){
 		scanf ("%f",&comodo.paredes[i].largura);
 		
 		printf ("Quantidade de Portas (0 senao houver): ");
-		scanf ("%f",&comodo.paredes[i].qntPorta);
+		scanf ("%d",&comodo.paredes[i].qntPorta);
 		printf ("Quantidade de Janelas (0 senao houver): ");
-		scanf ("%f",&comodo.paredes[i].qtdJanela);
+		scanf ("%d",&comodo.paredes[i].qtdJanela);
 		
 		
 		if (calculaAreaMinima(comodo.paredes[i].altura, comodo.paredes[i].largura)){
-		i++;
-		
-		
-		}
+			if(proporcaoArea(comodo.paredes[i])) {
+				if( alturaMinima(comodo.paredes[i].altura,comodo.paredes[i].qntPorta)) {
+					i++;
 					
-		
+				
+				else {
+					clearscreen();
+			
+					printf ("Erro: a parede tem que ter pelo menos 30 cm a mais do que a porta");
+					
+				}
+			}
+			else {
+				clearscreen();
+			
+				printf ("Erro: soma da area total de janelas e portas nao pode ultrapassar metade da area da parede");	
+			}
+		}		
 		else {
-		
-		clearscreen();
+			clearscreen();
 		
 			printf ("Erro: Area da parede tem que estar entre 1 e 15 metros quadrados");
 	
